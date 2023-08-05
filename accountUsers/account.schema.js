@@ -15,6 +15,19 @@ export const accountRegisterSchema = joi.object({
         `{{#label}} should not contains symbols like ( '$' , '}' , '{' , ';' , '<' , '>' ,` +
         " '`' )",
     }),
+  tagline:joi
+    .string()
+    .label("Account Tagline")
+    .min(5)
+    .max(100)
+    .lowercase()
+    .regex(/[${};<>`]/, { invert: true })
+    .messages({
+      "string.pattern.invert.base":
+        `{{#label}} should not contains symbols like ( '$' , '}' , '{' , ';' , '<' , '>' ,` +
+        " '`' )",
+    })
+    .trim(),
   username: joi
     .string()
     .label("Account Username")
@@ -42,14 +55,13 @@ export const accountRegisterSchema = joi.object({
     .max(13)
     .lowercase()
     .required()
-    //.regex(/[${};<>`]/, { invert: true })
+    .regex(/^\d{10}$/)
     //.regex(/[^\d{8,13}$]/)
     .trim()
     // .pattern(/^\+\d+$/)
     .messages({
       "string.pattern.base":
-        `{{#label}} should not contains characters and symbols like ( '$' , '}' , '{' , ';' , '<' , '>' ,` +
-        " '`' ) and should follow mobile number format",
+        `{{#label}} should only contains 10 digits`,
     }),
   profilePicUrl: joi
     .string()

@@ -9,7 +9,8 @@ dotenv.config()
 // for generating hash of passwords when user signups
 export const generateHash=async(pass)=>{
     try{
-        let hashPassword=await bcrypt.hash(pass,12);
+        let salt = parseInt(process.env.SALT);
+        let hashPassword=await bcrypt.hash(pass,salt);
         return hashPassword;
     }
     catch(err){
