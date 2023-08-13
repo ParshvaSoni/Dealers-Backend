@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import accountSchema from "../accountUsers/accountDB.js";
+import accountSchema from "../accountUsers/account.db.js";
 
 const METAL_ENUM = ['gold', 'silver', 'platinum', 'immitation'];
 const METAL_PURITY_ENUM = ['18KT', '22KT', '24KT', '100%'];

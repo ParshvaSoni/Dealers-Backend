@@ -2,18 +2,22 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { compareHash, generateHash } from "../utils/helperFunctions.js";
 import { signJWT } from "../utils/create-verify-JWT.js";
-import accountSchema from "./accountDB.js";
+import accountSchema from "./account.db.js";
+import { createAccountMetaData } from "../accountMetaData/accountMetaData.controllers.js";
 
 dotenv.config();
 
 //create new user
 export const createUser = async (req, res) => {
   try {
-    console.log(req.body.password)
     let hash = await generateHash(req.body.password);
     req.body.password = hash;
     const tempUser = new accountSchema(req.body);
     const newUser = await tempUser.save()
+    const newUserMetaData = await createAccountMetaData(newUser._id);
+    if (!newUserMetaData.success) {
+      return res.status(newUserMetaData.status).json({ success: 0, message: newUserMetaData.message, data: newUserMetaData.data });
+    }
     res.status(200).json({ success: 1, message: "User Created Successfully.", data: newUser });
   }
   catch (err) {
@@ -40,17 +44,17 @@ export const loginUser = async (req, res) => {
           mobile: validUser.mobile,
           username: validUser.username,
           shopname: validUser.shopname,
-          tagline:validUser.tagline
+          tagline: validUser.tagline
           //enter more details has per you requirements in future
         }
         const accessToken = await signJWT(payload, process.env.JWT_ACCESSTOKEN_KEY, 18000) // access token is valid for 30 mins
         const refreshToken = await signJWT(payload, process.env.JWT_REFRESHTOKEN_KEY, '7d') // refresh token are valid for 7 days
         //accessToken
         res.cookie(`act`, `${accessToken}`, {
-            maxAge: 18000, // access token is valid for 30 mins only
-            // secure: true, // so that cookies are sent only if domain is HTTPS
-            httpOnly: true, // so that JS cannot access it 
-            sameSite: true, // so that cookies are sent to our domain only
+          maxAge: 18000, // access token is valid for 30 mins only
+          // secure: true, // so that cookies are sent only if domain is HTTPS
+          httpOnly: true, // so that JS cannot access it 
+          sameSite: true, // so that cookies are sent to our domain only
         })
         //refreshToken
         res.cookie(`rct`, `${refreshToken}`, {

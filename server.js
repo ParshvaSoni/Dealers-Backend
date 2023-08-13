@@ -7,6 +7,7 @@ import "dotenv/config.js";
 import dbconfig from "./config/dbConfig.js";
 import accountRouter from "./accountUsers/account.routes.js";
 import bakiBillRouter from "./bakiBill/bakiBill.routes.js";
+import accountMetaDataRouter from "./accountMetaData/accountMetaData.routes.js";
 
 const app = express();
 // const routes=require('./routes/posts');
@@ -30,6 +31,7 @@ mongoose
   .catch((error) => console.log(error.message));
 
 app.use("/account", accountRouter);
+app.use("/accountmetadata", accountMetaDataRouter);
 app.use("/bakibill",bakiBillRouter)
 
 // page not found error handling  middleware

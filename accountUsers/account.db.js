@@ -2,17 +2,6 @@
 import mongoose from "mongoose"
 
 const accountMongooseSchema = new mongoose.Schema({
-    shopname: {
-        type: String,
-        minlength: [5, "Account shopname should be atleast 5 character long!"],
-        maxlength: [50, "Account shopname should be atmost 50 character long!"],
-        required: [true, "Account shopname is required!"],
-    },
-    tagline: {
-        type: String,
-        minlength: [5, "Account shopname should be atleast 5 character long!"],
-        maxlength: [100, "Account shopname should be atmost 50 character long!"],
-    },
     username: {
         type: String,
         minlength: [5, "Account name should be atleast 5 character long!"],
@@ -31,9 +20,6 @@ const accountMongooseSchema = new mongoose.Schema({
         match: [/^\d{10}$/, 'Account mobile number is not in valid format!'],
         required: [true, "Account mobile number is required!"],
         unique: true
-    },
-    profilePicUrl: {
-        type: String,
     },
     password: {
         type: String,
