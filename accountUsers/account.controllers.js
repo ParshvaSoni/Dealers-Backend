@@ -52,19 +52,19 @@ export const loginUser = async (req, res) => {
         //accessToken
         res.cookie(`act`, `${accessToken}`, {
           maxAge: 18000, // access token is valid for 30 mins only
-          // secure: true, // so that cookies are sent only if domain is HTTPS
+          secure: true, // so that cookies are sent only if domain is HTTPS
           httpOnly: true, // so that JS cannot access it 
           sameSite: true, // so that cookies are sent to our domain only
         })
         //refreshToken
         res.cookie(`rct`, `${refreshToken}`, {
           expires: new Date(new Date().getTime() + (7 * 24 * 60 * 60 * 1000)), // refresh token is valid for 7 days only
-          // secure: true, // so that cookies are sent only if domain is HTTPS
+          secure: true, // so that cookies are sent only if domain is HTTPS
           httpOnly: true, // so that JS cannot access it 
           sameSite: true, // so that cookies are sent to our domain only
         })
 
-        res.status(200).json({ success: 1, message: "User Authenticated", data: { token: accessToken, userinfo: payload } });
+        res.status(200).json({ success: 1, message: "User Authenticated", data: {userinfo: payload } });
       }
       else {
         return res.status(401).json({ success: 0, message: "Wrong or no authentication username/password provided.", data: null });

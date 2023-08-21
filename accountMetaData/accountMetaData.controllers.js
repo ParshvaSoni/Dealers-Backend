@@ -35,7 +35,7 @@ export const updateAccountMetaData = async (req, res) => {
 export const getMyMetaData = async (req, res) => {
     try {
         if (mongoose.Types.ObjectId.isValid(req.decode.id)) {
-            let myMetaData = await accountMetaDataSchema.findOne({ accountId: req.decode.id });
+            let myMetaData = await accountMetaDataSchema.findOne({ accountId: req.decode.id }).select({ address: 1, footerPhotoUrl: 1, gstnumber: 1, headerPhotoUrl: 1, profilePicUrl: 1, shopname: 1, tagline: 1 });
             return res.status(200).json({ success: 1, message: "Account Metadata Retrieved Successfully", data: myMetaData })
         }
         else {
