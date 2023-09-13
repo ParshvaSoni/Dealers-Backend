@@ -56,7 +56,7 @@ export const authVerify = async (req, res, next) => {
                       maxAge: 18000, // access token is valid for 30 mins only
                       secure:true, // so that cookies are sent only if domain is HTTPS
                       httpOnly: true, // so that JS cannot access it 
-                      sameSite: true, // so that cookies are sent to our domain only
+                      // sameSite: true, // so that cookies are sent to our domain only
                   })
                   next();
               }
