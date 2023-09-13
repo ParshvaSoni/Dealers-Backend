@@ -54,14 +54,14 @@ export const loginUser = async (req, res) => {
           maxAge: 18000, // access token is valid for 30 mins only
           secure: true, // so that cookies are sent only if domain is HTTPS
           httpOnly: true, // so that JS cannot access it 
-          // sameSite: true, // so that cookies are sent to our domain only
+          sameSite: 'none', // so that cookies are sent to our domain only
         })
         //refreshToken
         res.cookie(`rct`, `${refreshToken}`, {
           expires: new Date(new Date().getTime() + (7 * 24 * 60 * 60 * 1000)), // refresh token is valid for 7 days only
           secure: true, // so that cookies are sent only if domain is HTTPS
           httpOnly: true, // so that JS cannot access it 
-          // sameSite: true, // so that cookies are sent to our domain only
+          sameSite: 'none', // so that cookies are sent to our domain only
         })
 
         res.status(200).json({ success: 1, message: "User Authenticated", data: { userinfo: payload } });
@@ -85,14 +85,14 @@ export const logoutUser = (req, res) => {
       maxAge: 0, // access token is valid for 0 mins only
       secure: true, // so that cookies are sent only if domain is HTTPS
       httpOnly: true, // so that JS cannot access it 
-      // sameSite: true, // so that cookies are sent to our domain only
+      sameSite: 'none', // so that cookies are sent to our domain only
   })
   //refreshToken
   res.cookie(`rct`, ``, {
       maxAge: 0, // refresh token is valid for 0 days only
       secure: true, // so that cookies are sent only if domain is HTTPS
       httpOnly: true, // so that JS cannot access it 
-      // sameSite: true, // so that cookies are sent to our domain only
+      sameSite: 'none', // so that cookies are sent to our domain only
   })
     res.status(200).json({ success: 1, message: "Logout Successfully", data: null })
   }
