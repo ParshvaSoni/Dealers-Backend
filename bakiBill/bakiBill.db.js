@@ -34,6 +34,12 @@ const bakiBillSchema = new mongoose.Schema({
         maxlength: [30, "Baki bill customer name should be maximum 30 character long !"],
         required: [true, "Baki bill customer name is required !"],
     },
+    productname: {
+        type: String,
+        minlength: [5, "Baki bill product name should be minimum 5 character long !"],
+        maxlength: [30, "Baki bill product name should be maximum 30 character long !"],
+        required: [true, "Baki bill product name is required !"],
+    },
     customermobile: {
         type: String,
         match: [/^\d{10}$/, 'Baki bill customer mobile number is not in valid format!'],

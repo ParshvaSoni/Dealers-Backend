@@ -64,7 +64,7 @@ export const loginUser = async (req, res) => {
           sameSite: true, // so that cookies are sent to our domain only
         })
 
-        res.status(200).json({ success: 1, message: "User Authenticated", data: {userinfo: payload } });
+        res.status(200).json({ success: 1, message: "User Authenticated", data: { userinfo: payload } });
       }
       else {
         return res.status(401).json({ success: 0, message: "Wrong or no authentication username/password provided.", data: null });
@@ -76,5 +76,27 @@ export const loginUser = async (req, res) => {
   }
   catch (err) {
     return res.status(500).json({ success: 0, message: err.message, data: null });
+  }
+}
+
+export const logoutUser = (req, res) => {
+  try {
+    res.cookie(`act`, ``, {
+      maxAge: 0, // access token is valid for 0 mins only
+      secure: true, // so that cookies are sent only if domain is HTTPS
+      httpOnly: true, // so that JS cannot access it 
+      sameSite: true, // so that cookies are sent to our domain only
+  })
+  //refreshToken
+  res.cookie(`rct`, ``, {
+      maxAge: 0, // refresh token is valid for 0 days only
+      secure: true, // so that cookies are sent only if domain is HTTPS
+      httpOnly: true, // so that JS cannot access it 
+      sameSite: true, // so that cookies are sent to our domain only
+  })
+    res.status(200).json({ success: 1, message: "Logout Successfully", data: null })
+  }
+  catch (err) {
+    res.status(500).json({ success: 0, message: err.message, data: null })
   }
 }

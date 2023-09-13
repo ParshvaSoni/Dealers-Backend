@@ -13,6 +13,19 @@ export const createBakiBill = async (req, res) => {
     }
 }
 
+export const deleteBakiBill = async (req, res) => {
+    try {
+        let accountId = req.decode.id;
+        let billId = req.params.id;
+        let deletedBill = await BakiBillSchema.findOneAndDelete({ accountId: accountId, _id: billId });
+        console.log(deletedBill);
+        return res.status(200).json({ success: 1, message: "Baki Bill Deleted Successfully", data: null });
+    }
+    catch (err) {
+        return res.status(500).json({ success: 0, message: err.message, data: null });
+    }
+}
+
 export const getBakiBill = async (req, res) => {
     try {
         let accountId = req.decode.id;
@@ -60,7 +73,6 @@ export const getBakiBill = async (req, res) => {
                 return res.status(400).json({ success: 0, message: "Metal Type : one of 'gold', 'silver', 'platinum' or 'immitation'.", data: null })
             }
         }
-
         const accountBakiBills = await BakiBillSchema.find(qobj).limit(limit).skip(startIndex);
         return res.status(200).json({ success: 1, message: "Baki bills retrieved successfully", data: accountBakiBills })
     }

@@ -1,18 +1,6 @@
 import joi from "joi";
 
 export const bakiBillCreateSchema = joi.object({
-    accountId: joi
-        .string()
-        .label("Baki Bill Account ID")
-        .length(24)
-        .regex(/[${};<>`]/, { invert: true })
-        .messages({
-            "string.pattern.invert.base":
-                `{{#label}} should not contains symbols like ( '$' , '}' , '{' , ';' , '<' , '>' ,` +
-                " '`' )",
-        })
-        .trim()
-        .required(),
     customername: joi
         .string()
         .label("Baki Bill Customer Name")
@@ -39,10 +27,24 @@ export const bakiBillCreateSchema = joi.object({
         })
         .trim()
         .required(),
+    productname: joi
+        .string()
+        .label("Baki Bill Customer Name")
+        .min(5)
+        .max(30)
+        .regex(/[${};<>`]/, { invert: true })
+        .messages({
+            "string.pattern.invert.base":
+                `{{#label}} should not contains symbols like ( '$' , '}' , '{' , ';' , '<' , '>' ,` +
+                " '`' )",
+        })
+        .trim()
+        .lowercase()
+        .required(),
     metaltype: joi
         .string()
         .label("Baki Bill Metal Type")
-        .valid("gold", "silver", "platinum","immitation")
+        .valid("gold", "silver", "platinum", "immitation")
         .required()
         .lowercase(),
     metalweight: joi
@@ -87,7 +89,7 @@ export const bakiBillCreateSchema = joi.object({
             "string.pattern.invert.base": `{{#label}} should not contains symbols like ( '$' , '}' , '{' , ';' , '<' , '>' ,` + " '`' )"
         })
         .trim()
-        .lowercase(),
+        .lowercase().allow(''),
     deliverdate: joi
         .date()
         .iso()
