@@ -21,7 +21,7 @@ export const updateAccountMetaData = async (req, res) => {
     try {
         if (mongoose.Types.ObjectId.isValid(req.decode.id)) {
             let updatedAccountMetaData = await accountMetaDataSchema.findOneAndUpdate({ accountId: req.decode.id }, req.body);
-            return res.status(200).json({ success: 1, message: "Account Metadata Updated Successfully" })
+            return res.status(200).json({ success: 1, message: "Account Metadata Updated Successfully", data: updatedAccountMetaData })
         }
         else {
             return res.status(404).json({ success: 0, message: "Unable To Update Account Metadata, Invalid Account Id" })
@@ -43,6 +43,6 @@ export const getMyMetaData = async (req, res) => {
         }
     }
     catch (err) {
-
+        return res.status(500).json({ success: 0, message: err.message, data: null })
     }
 }
