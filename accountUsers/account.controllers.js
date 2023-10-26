@@ -35,7 +35,7 @@ export const loginUser = async (req, res) => {
   try {
     let { mobile, password } = req.body;
     if (mobile === undefined) return res.status(400).json({ success: 0, message: "Mobile is undefined", data: null })
-    const validUser = await accountSchema.findOne({ mobile: mobile }).select({ email: 1, tagline: 1, mobile: 1, password: 1, username: 1, shopname: 1 });
+    const validUser = await accountSchema.findOne({ mobile: mobile }).select({ email: 1, mobile: 1, password: 1, username: 1 });
     if (validUser != null) {
       const check = await compareHash(password, validUser.password);
       if (check) {
@@ -43,8 +43,7 @@ export const loginUser = async (req, res) => {
           id: validUser._id,
           mobile: validUser.mobile,
           username: validUser.username,
-          shopname: validUser.shopname,
-          tagline: validUser.tagline
+          email:validUser.email
           //enter more details has per you requirements in future
         }
         const accessToken = await signJWT(payload, process.env.JWT_ACCESSTOKEN_KEY, 18000) // access token is valid for 30 mins
@@ -86,14 +85,14 @@ export const logoutUser = (req, res) => {
       secure: true, // so that cookies are sent only if domain is HTTPS
       httpOnly: true, // so that JS cannot access it 
       sameSite: 'none', // so that cookies are sent to our domain only
-  })
-  //refreshToken
-  res.cookie(`rct`, ``, {
+    })
+    //refreshToken
+    res.cookie(`rct`, ``, {
       maxAge: 0, // refresh token is valid for 0 days only
       secure: true, // so that cookies are sent only if domain is HTTPS
       httpOnly: true, // so that JS cannot access it 
       sameSite: 'none', // so that cookies are sent to our domain only
-  })
+    })
     res.status(200).json({ success: 1, message: "Logout Successfully", data: null })
   }
   catch (err) {
